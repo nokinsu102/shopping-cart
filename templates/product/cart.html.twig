@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Cart {% endblock %}
+
+{% block body %}
+    {# <br><b>ID: </b>{{ product.id }}<br>
+    <b>Name: </b>{{ product.name }}<br>
+    <b>Price: </b>€{{ product.price }}<br>
+    <b>Image: </b>{{ product.image }}<br>
+    <b>Description: </b>{{ product.description }}<br>
+    <b>Category: </b>{{ product.category }}<br> #}
+
+       {% for array in cart %}
+
+            <td> {{ array.name }} </td>
+            <td> {{ array.price }} </td>
+            <td> {{ array.amount }} </td>
+
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+
+{% endblock %}    
