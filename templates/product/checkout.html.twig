@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Cart {% endblock %}
+{% block title %} Checkout {% endblock %}
 
 {% block body %}
        {% for array in cart %}
@@ -16,5 +16,4 @@
         {% endfor %}
 
         <b>{{ total }}</b><br>
-        <a href="{{ path('product_checkout') }}">Checkout</a>
 {% endblock %}    

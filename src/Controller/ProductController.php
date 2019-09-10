@@ -105,27 +105,48 @@ class ProductController extends AbstractController
     /**
      * @Route("/cart/{id}", name="product_cart", methods={"GET", "POST"})
      */
-    public function addToCart(Product $product, $id)
+    public function addToCart(Product $product)
      {
         $getCart = $this->session->get('cart', []);
+        $total = 0;
 
-        if(isset($getCart[$id])){
-            $getCart[$id]['amount']++;
-        }
-        else{
-            $getCart[$id] = array(
+        if (isset($getCart[$product->getId()])) {
+            $getCart[$product->getId()]['amount']++;
+        } else {
+            $getCart[$product->getId()] = array(
                 'amount' => 1,
-                'name' =>$product-> getName(),
-                'price' => $product->getImage(),
-                'id' =>$product->getId(),
+                'id' => $product->getId(),
             );
         }
         $this->session->set('cart', $getCart);
-        return $this->render('product/cart.html.twig',[
-       'product' => $getCart[$id]['name'],
-       'amount' => $getCart[$id]['amount'],
-       'cart' => $getCart
-            ]);
+
+        foreach($getCart as $id => $details)
+        {
+            $total = $total + ($getCart[$id]['amount'] * $getCart[$id]['price']);
+        }
+
+        $this->session->set('total', $total);
+
+        return $this->render('product/cart.html.twig', [
+            'amount' => $getCart[$product->getId()]['amount'],
+            'total' => $total,
+            'cart' => $getCart
+        ]);
+    }
+
+    /**
+     * @Route("/checkout", name="product_checkout", methods={"GET", "POST"})
+     */
+    public function checkOut(Product $product)
+    {
+        $getCart = $this->session->get('cart', []);
+        $getTotal = $this->session->get('total', []);
+        
+        return $this->render('product/checkout.html.twig', [
+            'amount' => $getCart[$product->getId()]['amount'],
+            'total' => $getTotal,
+            'cart' => $getCart
+        ]);
     }
 }
 
