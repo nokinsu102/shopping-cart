@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Form\CheckoutType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Swift_Mailer;
+use Swift_Message;
 
 
 /**
@@ -34,6 +37,30 @@ class ProductController extends AbstractController
             'products' => $productRepository->findAll(),
         ]);
     }
+
+    /**
+     * @Route("/checkout", name="product_checkout", methods={"GET", "POST"})
+     */
+    public function checkout(Swift_Mailer $mailer, Request $response)
+    {
+        $getCart = $this->session->get('cart', []);
+        $message = (new Swift_Message())
+            ->setSubject('Here should be a subject')
+            ->setFrom(['support@mailtrap.io'])
+            ->setTo(['newuser@example.com'])
+            ->setBody(
+                $this->renderView(
+                    'product/cart.html.twig',
+                    ['cart' => $getCart]
+                ),
+                'text/html'
+            );
+            $mailer->send($message);
+            $form = $this->createForm(CheckoutType::class);
+            return $this->render('product/checkout.html.twig', [
+                'checkout_form' => $form->createView(),
+            ]);         
+        }
 
     /**
      * @Route("/new", name="product_new", methods={"GET","POST"})
@@ -108,7 +135,7 @@ class ProductController extends AbstractController
     public function addToCart(Product $product)
      {
         $getCart = $this->session->get('cart', []);
-        $total = 0;
+        // $total = 0;
 
         if (isset($getCart[$product->getId()])) {
             $getCart[$product->getId()]['amount']++;
@@ -116,35 +143,27 @@ class ProductController extends AbstractController
             $getCart[$product->getId()] = array(
                 'amount' => 1,
                 'id' => $product->getId(),
+                'name' => $product->getName(),
+                'price' => $product->getPrice(),
+                'image' => $product->getImage(),
+                'description' => $product->getDescription(), 
+                'category' => $product->getCategory()
             );
         }
         $this->session->set('cart', $getCart);
 
-        foreach($getCart as $id => $details)
-        {
-            $total = $total + ($getCart[$id]['amount'] * $getCart[$id]['price']);
-        }
-
-        $this->session->set('total', $total);
+        // foreach($getCart as $id => $details)
+        // {
+        //     $total = $total + ($getCart[$id]['amount'] * $getCart[$id]['price']);
+        // }
+        // $this->session->set('total', $total);
 
         return $this->render('product/cart.html.twig', [
+            'product' => $getCart[$product->getId()]['name'],
             'amount' => $getCart[$product->getId()]['amount'],
-            'total' => $total,
-            'cart' => $getCart
-        ]);
-    }
-
-    /**
-     * @Route("/checkout", name="product_checkout", methods={"GET", "POST"})
-     */
-    public function checkOut(Product $product)
-    {
-        $getCart = $this->session->get('cart', []);
-        $getTotal = $this->session->get('total', []);
-        
-        return $this->render('product/checkout.html.twig', [
-            'amount' => $getCart[$product->getId()]['amount'],
-            'total' => $getTotal,
+            'image' => $getCart[$product->getId()]['image'],
+            'description' => $getCart[$product->getId()]['description'],
+            'category' => $getCart[$product->getId()]['category'],
             'cart' => $getCart
         ]);
     }

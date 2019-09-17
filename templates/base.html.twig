@@ -1,12 +1,72 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
+        <head>
+            <title>{% block title %}Welcome!{% endblock %}</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="description" content="">
+            <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+            <meta name="generator" content="Jekyll v3.8.5">
+            <title>La Casserai</title>
+
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+            {% block stylesheets %}{% endblock %}
+            <!-- Custom styles for this template -->
+            <link href="carousel.css" rel="stylesheet">
+        </head>
+        <style>
+            .btn-primary{ 
+                background-color:#ff0074!important;
+                border: none!important;
+            }
+            
+            body{
+                background:black;
+                color:white;
+            } 
+
+            th, td{
+                color:white;
+            }
+        </style>
     <body>
-        {% block body %}{% endblock %}
+    <header>
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('default') }}">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('product_index') }}">Product</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('category_index') }}">Category</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('image_index') }}">Image</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="mx-auto order-0">
+                <a class="navbar-brand mx-auto" href="{{ path('default') }}"><span style="color:#ff0074;">Web</span> Shop</a>
+            </div>
+          </li>
+        </ul>
+    </div>
+</nav>
+    </header>
+        {% block body %}
+        {% endblock %}
+        {% block content %}
+            {% block fos_user_content %}{% endblock %}
+        {% endblock %}
+          <footer class="container text-center">
+            <p>© 2000-2019 Webshop <a href="https://policies.google.com/" style='color:#ff0074;'>Privacy</a> · <a href="https://policies.google.com/terms?hl=en-US" style='color:#ff0074;'>Terms</a></p>
+            </footer>
         {% block javascripts %}{% endblock %}
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </body>
 </html>

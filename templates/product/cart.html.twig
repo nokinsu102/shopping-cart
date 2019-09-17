@@ -3,18 +3,53 @@
 {% block title %} Cart {% endblock %}
 
 {% block body %}
+<div class="container">
+    <div class="row">
+    {% set total = 0 %}
        {% for array in cart %}
-
-            <td> Name: {{ array.name }} </td><br>
-            <td> Price: {{ array.price }} </td><br>
-            <td> Amount: {{ array.amount }} </td><br>
-            <td> Total: </td>
+       <div class="col-md-4" style="margin-top:20px;margin-bottom:20px;">
+          <div class="card" style="background:black;border:2px solid white;">
+          {% for image in array.image %}
+            <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ image.imageName }}" class="card-img-top" style="height: 225px; width: 100%; display: block;">
+          {% endfor %}
+            <div class="card-body">
+              <h5 class="card-title">{{ array.name }} - {{ array.category }}</h5>
+              <h5 class="card-title">Amount: <b>{{ array.amount }}</b></h5>
+               <p class="card-text">{{ array.description }}</p>
+              <h5 class="pricing-card-title">Price: €{{ array.price }}</h5> 
+            </div>
+          </div>
+        </div>
+             {% set total = total + (array.amount * array.price) %}
         {% else %}
             <tr>
                 <td colspan="3">no records found</td>
             </tr>
         {% endfor %}
-
-        <b>{{ total }}</b><br>
-        <a href="{{ path('product_checkout') }}">Checkout</a>
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text">Your cart</span>
+          </h4>
+          <ul class="list-group mb-3">
+          {% for array in cart %}
+            <li class="list-group-item d-flex justify-content-between lh-condensed" style="background:black;border:2px solid white;">
+              <div>
+                <h6 class="my-0">{{ array.name }} - <b>{{ array.category }}</b></h6>
+                <small class="text"><b>Price:</b> €{{ array.price }} - <b>Amount:</b> {{ array.amount }}</small>
+              </div>
+            </li>
+            {% endfor %}
+            <li class="list-group-item d-flex justify-content-between" style="background:black;border:2px solid white;">
+              <span>Total (EUR)</span>
+              <strong>€{{ total }}</strong>
+            </li>
+             <li class="list-group-item d-flex justify-content-between" style="background:black;border:2px solid white;">
+              <span>Checkout</span>
+              <strong><a href="{{ path('product_checkout') }}" class="btn btn-light">Checkout</a></strong>
+            </li>
+          </ul>
+        </div>
+        </div>
+    </div>
+</div>
 {% endblock %}    

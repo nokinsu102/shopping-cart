@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+    {% for product in products %}
+        <div class="col-md-4" style="margin-top:20px;margin-bottom:20px;">
+          <div class="card" style="background:black;border:2px solid white;">
+          {% for image in product.image %}
+            <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ image.imageName }}" class="card-img-top" style="height: 225px; width: 100%; display: block;">
+          {% endfor %}
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }} - {{ product.category }}</h5>
+              <h5 class="pricing-card-title">Price: €{{ product.price }}</h5> 
+               <p class="card-text">{{ product.description }}</p>
+              <a class="btn btn-outline-secondary" href="/product/cart/{{ product.id}}">Order</a>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

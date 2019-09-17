@@ -1,19 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Checkout {% endblock %}
+{% block title %}Checkout{% endblock %}
 
 {% block body %}
-       {% for array in cart %}
-
-            <td> Name: {{ array.name }} </td><br>
-            <td> Price: {{ array.price }} </td><br>
-            <td> Amount: {{ array.amount }} </td><br>
-            <td> Total: </td>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-
-        <b>{{ total }}</b><br>
-{% endblock %}    
+<style>
+    .btn{
+        color:white!important;
+    }
+</style>
+  <div class="container" style="background:black;border:2px solid white;margin-top:50px;">
+  
+  {{ form(checkout_form) }}
+  </div>
+{% endblock %}
